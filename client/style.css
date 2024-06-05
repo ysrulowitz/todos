@@ -1,0 +1,341 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f0f0;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* height: 100vh; */
+}
+
+.todo-container {
+  background: #d3d0d9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 50%;
+  padding: 40px 50px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+}
+
+.input-container input {
+  flex-grow: 1;
+  height: 12px;
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  margin-right: 5px;
+}
+
+.input-container input:focus {
+  outline: blue 1px solid;
+}
+
+.input-container button {
+  width: 32px;
+  height: 32px;
+  background: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: larger;
+}
+
+.input-container button:hover {
+  background: #eee;
+}
+
+.input-container button:active {
+  background: #eee;
+  border: blue 1px solid;
+}
+
+.task-list {
+  margin-bottom: 30px;
+}
+
+.task-header {
+  font-weight: lighter;
+  font-size: small;
+  margin-bottom: 10px;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  background: white;
+  border-radius: 10px;
+  padding: 0px 20px;
+}
+
+.task p {
+  font-size: smaller;
+  font-weight: lighter;
+  padding: 10px 0px;
+}
+
+.task button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.task button:hover {
+  background: #eee;
+}
+
+.task button:active {
+  background: #eee;
+  border: blue 1px solid;
+}
+
+.completed .task p {
+  text-decoration: line-through;
+}
+
+#remove-task-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.586);  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  backdrop-filter: blur(8px);
+  z-index: 999;
+}
+
+.dialog-msg{
+  text-align:center;
+}
+
+#remove-task-dialog .btn-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+#remove-task-dialog button {
+  width: 45%;
+  height: 40px;
+  background: white;
+  border: 1px solid #c2c2c284 ;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: larger;
+  margin-top: 30px;
+  background-color: #eeeeeeb2;
+}
+
+#remove-task-dialog button:hover {
+  background: #d7d7d7;
+}
+
+#remove-task-dialog .confirm-delete:hover {
+  background: #ff0000cd;
+  border: 1px solid #880101 ;
+
+}
+
+#remove-task-dialog button:active {
+  background: #eee;
+  border: blue 1px solid;
+}
+
+
+.user-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: #deedfdce;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  margin-right: 5px;
+}
+
+.user-icon.name-hover:hover::after {
+  content: attr(title);
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #a2a2a2a0;
+  backdrop-filter: blur(8px);
+  color: #fff;
+  padding: 3px;
+  border-radius: 5px;
+  white-space: nowrap;
+  z-index: 10;
+  font-size: small;
+}
+
+
+.dropdown-content {
+  opacity: 0;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 10px;
+  overflow-y: hidden;
+  max-height: 0; 
+  transition: max-height .5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.show {
+  max-height: 200px; 
+  opacity: 1;
+}
+
+.show::-webkit-scrollbar {
+  width: 4px;
+}
+
+.show::-webkit-scrollbar-thumb {
+  background-color: #8888886a; 
+  border-radius: 2px;
+}
+
+.show::-webkit-scrollbar-track {
+  background-color: #f9f9f900;
+}
+
+.transitioned{
+  overflow-y: auto; 
+}
+
+
+.dropdown-content button {
+  color: black;
+  padding: 10px 10px;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  border: none;
+  background: none;
+  text-align: left;
+  border-bottom: 2px solid white;
+}
+
+.dropdown-content :last-child{
+  text-align: center;
+  border: none;
+}
+
+.dropdown-content button:hover {
+  background-color: #e0e0e0;
+  border-radius: 10px;
+}
+
+#filter-dropdown button:last-child:hover {
+  background-color: rgba(226, 0, 0, 0.527);
+  border-radius: 10px;
+}
+
+.user-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center; 
+}
+
+#filter-btn{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+#filter-btn:hover{
+  background: #eee;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+
+/* Add this to your style.css file */
+
+body {
+  /* background: url('your-background-image.jpg') no-repeat center center fixed; */
+  background-size: cover;
+  font-family: Arial, sans-serif;
+}
+
+.login {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  display: flex; 
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 15px;
+  /* background: url('your-login-background.jpg') no-repeat center center; */
+  background-size: cover;
+}
+
+.login input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.login button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007BFF; /* Bluish color */
+  color: white;
+  cursor: pointer;
+  width: 48%;
+  margin: 10px 1%;
+}
+
+.login button:hover {
+  background-color: #0056b3; /* Darker bluish color for hover */
+}
+
+.login-btn-container {
+  margin-top: 10px;
+  display: flex; 
+  justify-content: space-between;
+}
+
+.red-border{
+  border: 2px solid red !important;
+}
+
+.red-border::placeholder {
+  color: red;
+}
