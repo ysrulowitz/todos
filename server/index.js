@@ -37,17 +37,27 @@ app.post('/tasks', async (req, res) => {
 })
 
 app.patch('/tasks/:id', async (req, res) => {
-    const result = await db.none("update todoapp.task set status = 'done' where id = ${id}", {
-        id: req.params.id
+    const result = await db.oneOrNone("update todoapp.task set status = 'done' where id = ${id} and user_id = ${userId} returning *", {
+        id: req.params.id,
+        userId: req.body.userId
     })
-    res.json({ok: true})
+    if(result){
+        res.json({ok: true, result})
+    }else{
+        res.json({ok: false, error: "no task for current user"})
+    }
 })
 
 app.delete('/tasks/:id', async (req, res) => {
-    await db.none("update todoapp.task set deleted_at = now() where id = ${id}", {
-        id: req.params.id
+    const result = await db.oneOrNone("update todoapp.task set deleted_at = now() where id = ${id} and user_id = ${userId} returning *", {
+        id: req.params.id,
+        userId: req.body.userId
     })
-    res.json({ok: true})
+    if(result){
+        res.json({ok: true, result})
+    }else{
+        res.json({ok: false, error: "no task for current user"})
+    }
 })
 
 app.post('/users', async (req, res) => {

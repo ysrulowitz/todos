@@ -1,3 +1,4 @@
+
 let tasks = [];
 let userNames = [];
 
@@ -176,7 +177,12 @@ async function taskCompleted(btnComleteElement) {
 
   await fetch(`http://localhost:3000/tasks/${id}`, {
     method: "PATCH",
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({userId: currentUser})
   });
+
   tasks.find((task) => Number(task.id).toString() === id).done = true;
 
   displayTasks();

@@ -22,6 +22,10 @@ async function confirmDelete(){
 
     await fetch(`http://localhost:3000/tasks/${id}`, {
         method: "delete",
+        headers: {
+            'content-type': 'application/json'
+          },
+          body: JSON.stringify({userId: currentUser})
       });
       tasks.find((task) => Number(task.id).toString() === id).deleted = true;
 
