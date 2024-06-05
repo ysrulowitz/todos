@@ -26,6 +26,8 @@ async function confirmDelete(){
       tasks.find((task) => Number(task.id).toString() === id).deleted = true;
 
     confirmationDialog.style.display = 'none';
+    // await main()
+    tasks = tasks.filter(task => Number(task.id) !== Number(id));
 
     displayTasks();
 

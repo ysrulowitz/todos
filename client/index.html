@@ -26,9 +26,21 @@
         id="user-name-input"
         type="text"
         placeholder="Please Enter Your user name"
+        required
       />
-      <button id="login-btn" onclick="loginBtnClicked()">Login</button>
+      <input
+        id="user-pass-input"
+        type="password"
+        placeholder="Please Enter Your password"
+        required
+      />
+
+      <div class="login-btn-container" >
+        <button id="login-btn" onclick="loginBtnClicked()">Login</button>
+        <button id="create-account-btn" onclick="createAccountClicked()">Create Account</button>
+      </div>
     </div>
+    
     <div class="todo-container" style="display: none">
       <h1 id="app-title"></h1>
       <div>

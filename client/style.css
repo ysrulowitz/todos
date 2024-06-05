@@ -6,7 +6,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 .todo-container {
@@ -273,4 +273,69 @@ body {
   background: #eee;
   border-radius: 10px;
   padding: 5px;
+}
+
+
+/* Add this to your style.css file */
+
+body {
+  /* background: url('your-background-image.jpg') no-repeat center center fixed; */
+  background-size: cover;
+  font-family: Arial, sans-serif;
+}
+
+.login {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  display: flex; 
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 15px;
+  /* background: url('your-login-background.jpg') no-repeat center center; */
+  background-size: cover;
+}
+
+.login input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.login button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007BFF; /* Bluish color */
+  color: white;
+  cursor: pointer;
+  width: 48%;
+  margin: 10px 1%;
+}
+
+.login button:hover {
+  background-color: #0056b3; /* Darker bluish color for hover */
+}
+
+.login-btn-container {
+  margin-top: 10px;
+  display: flex; 
+  justify-content: space-between;
+}
+
+.red-border{
+  border: 2px solid red !important;
+}
+
+.red-border::placeholder {
+  color: red;
 }

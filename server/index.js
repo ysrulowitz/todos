@@ -50,6 +50,37 @@ app.delete('/tasks/:id', async (req, res) => {
     res.json({ok: true})
 })
 
+app.post('/users', async (req, res) => {
+    const results = await db.one('INSERT INTO todoapp.person ( "name", email, pass) VALUES(${name},${email}, ${pass}) returning *',{
+       name: req.body.name,
+       email: "yidi@gmail.com",
+       pass: req.body.pass
+    })
+    res.json(results)
+})
+
+app.post('/login', async (req, res) => {
+    const results = await db.manyOrNone('select * from todoapp.person where name = ${name}',{
+       name: req.body.name,
+    })
+    if (results){
+        for(let row of results){
+            if(row.pass===req.body.pass){
+                return res.json({ ok: true, user: row });
+            }
+        }
+        
+    }
+    res.json({ ok: false });
+})
+
+app.get('/userNames',async(req, res)=>{
+    const result = await db.manyOrNone('select id, name from todoapp.person')
+    res.json(result)
+    console.log(result)
+
+})
+
 
 app.listen('3000', () => {
     console.log('the server is running on port 3000')

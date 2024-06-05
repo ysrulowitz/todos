@@ -1,19 +1,17 @@
-let tasks = []
-let userNames = [  
-{ id: 1, name: "Yidi" },
-{ id: 2, name: "Hershy" },
-{ id: 3, name: "Mendy" },
-{ id: 4, name: "Sarah" },
-]
+let tasks = [];
+let userNames = [];
 
 async function main() {
-  let response = await fetch('http://localhost:3000/tasks')
+  let response = await fetch("http://localhost:3000/tasks");
   tasks = await response.json();
-  console.log(tasks)
+  console.log(tasks);
+
+  let response2 = await fetch("http://localhost:3000/userNames");
+  userNames = await response2.json();
+  console.log(userNames);
+
+  createFilterDropdown();
 }
-main()
-
-
 
 async function addTaskBtnClicked() {
   //get the task title from the input
@@ -25,31 +23,30 @@ async function addTaskBtnClicked() {
 
   if (!newTaskValue) return;
 
-  let newTaskObject = {    
-    userId: currentUser.id,
+  let newTaskObject = {
+    userId: currentUser,
     title: newTaskValue,
     done: false,
   };
 
-    const response = await fetch('http://localhost:3000/tasks', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newTaskObject)
-    })
-    const result = await response.json()
-    console.log(result)
+  const response = await fetch("http://localhost:3000/tasks", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newTaskObject),
+  });
+  const result = await response.json();
+  console.log(result);
 
-    newTaskObject.id = result.id
+  newTaskObject.id = result.id;
 
-      //add the task object to the tasks array
-      tasks.push(newTaskObject);
-      console.log(newTaskObject)
-
+  //add the task object to the tasks array
+  tasks.push(newTaskObject);
+  console.log(newTaskObject);
 
   let filterNameElmt = document.getElementById("filter-name");
-  let filterId = parseInt(filterNameElmt.getAttribute("user-id"))
+  let filterId = parseInt(filterNameElmt.getAttribute("user-id"));
 
   if (filterId) {
     displayTasks(filterId);
@@ -68,13 +65,17 @@ function displayTasks(userId) {
 
   for (let i = 0; i < tasks.length; i++) {
     let task = tasks[i];
-
-    if (task.deleted === true) continue
-
-    if (userId && task.userId !== userId) {
-      continue;
+    if (userId) {
+      if (task.userId !== userId) {
+        console.log("current user", currentUser, "task userId", task.userId);
+        continue;
+      }
+    } else {
+      if (task.userId !== currentUser) {
+        console.log("current user", currentUser, "task userId", task.userId);
+        continue;
+      }
     }
-
     let taskElement = buildTaskElement(task, i);
     if (task.done) {
       doneSectionElement.appendChild(taskElement);
@@ -90,18 +91,18 @@ function displayTasks(userId) {
   if (userId) {
     const userName = userNames.find((user) => user.id === userId).name;
     filterName.textContent = userName;
-    filterName.setAttribute("user-id", userId); 
+    filterName.setAttribute("user-id", userId);
     filterName.style.display = "block";
+    document.querySelector(".input-container").style.display = "none";
   } else {
     filterName.textContent = "";
     filterName.style.display = "none";
+    document.querySelector(".input-container").style.display = "flex";
   }
 }
 
-
-
 function buildTaskElement(task, index) {
-  console.log("task",task)
+  console.log("task", task);
   let taskElement = document.createElement("div");
   taskElement.classList.add("task");
   //
@@ -127,7 +128,7 @@ function buildTaskElement(task, index) {
   <p>${task.title}</p>
     <div>
     ${
-      task.done
+      task.done || task.userId !== currentUser
         ? ""
         : `<button onclick="taskCompleted(this)">
         <svg
@@ -145,7 +146,10 @@ function buildTaskElement(task, index) {
         </svg>
       </button>`
     }
-      <button onClick="taskRemoved(this)">
+    ${
+      task.userId !== currentUser
+        ? ""
+        : `<button onClick="taskRemoved(this)">
         <svg
           width="19"
           height="24"
@@ -160,7 +164,8 @@ function buildTaskElement(task, index) {
           />
         </svg>
       </button>
-    </div>`;
+    </div>`
+    }`;
 
   return taskElement;
 }
@@ -179,9 +184,10 @@ async function taskCompleted(btnComleteElement) {
 
 function createFilterDropdown() {
   const filterDropdown = document.getElementById("filter-dropdown");
-
+  console.log("filter usernames", userNames);
   // Create buttons for each user
   userNames.forEach((user) => {
+    if (user.id === currentUser) return
     const button = document.createElement("button");
     button.innerHTML = `<div class="user-row">
       <div class="user-icon" title="${user.name}">
@@ -229,6 +235,17 @@ function toggleDropdown() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  createFilterDropdown();
-});
+function togglePasswordVisibility() {
+  var passwordInput = document.getElementById("user-pass-input");
+  var toggleButton = document.getElementById("toggle-password");
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    toggleButton.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-2c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm1-6c-.55 0-1 .45-1 1s.45 1 1 1c.55 0 1-.45 1-1s-.45-1-1-1z"/></svg>';
+  } else {
+    passwordInput.type = "password";
+    toggleButton.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-2c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm1-6c-.55 0-1 .45-1 1s.45 1 1 1c.55 0 1-.45 1-1s-.45-1-1-1z"/></svg>';
+  }
+}
